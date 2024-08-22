@@ -1,12 +1,15 @@
 import api.user.User;
 import api.user.UserSteps;
+import components.Header;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import pages.MainPage;
 
 import java.time.Duration;
 
@@ -27,16 +30,76 @@ public class LoginTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
     }
 
-    @Test
-    @DisplayName("Проверка логина")
-    public void loginTest() {
-        ValidatableResponse response = userSteps.createUser(user);
-        accessToken = response.extract().path("accessToken");
-    }
-
     @After
     public void tearDown() {
         driver.quit();
         if (accessToken != null) userSteps.deleteUser(accessToken);
     }
+
+    @Test
+    @DisplayName("Проверка логина через кнопку на главной странице")
+    public void loginTestViaMainPageButton() {
+        ValidatableResponse response = userSteps.createUser(user);
+        accessToken = response.extract().path("accessToken");
+
+        Assert.assertTrue(new MainPage(driver)
+                .clickOnLoginButton()
+                .login(user.getEmail(), user.getPassword())
+                .checkDisplayedCreateOrderButton());
+    }
+
+    @Test
+    @DisplayName("Проверка логина через кнопку Личный Кабинет")
+    public void loginTestViaUserCabinetButton() {
+        ValidatableResponse response = userSteps.createUser(user);
+        accessToken = response.extract().path("accessToken");
+
+        Assert.assertTrue(new Header(driver)
+                .clickOnUserCabinetButtonWithoutAuth()
+                .login(user.getEmail(), user.getPassword())
+                .checkDisplayedCreateOrderButton());
+    }
+
+    @Test
+    @DisplayName("Проверка логина через кнопку Войти на странице регистрации")
+    public void loginTestViaRegistrationPageLoginButton() {
+        ValidatableResponse response = userSteps.createUser(user);
+        accessToken = response.extract().path("accessToken");
+
+        Assert.assertTrue(new Header(driver)
+                .clickOnUserCabinetButtonWithoutAuth()
+                .clickOnRegisterLink()
+                .clickOnLoginButton()
+                .login(user.getEmail(), user.getPassword())
+                .checkDisplayedCreateOrderButton());
+    }
+
+    @Test
+    @DisplayName("Проверка логина через кнопку на странице восстановления пароля")
+    public void loginTestViaRecoveryPageLoginButton() {
+        ValidatableResponse response = userSteps.createUser(user);
+        accessToken = response.extract().path("accessToken");
+
+        Assert.assertTrue(new Header(driver)
+                .clickOnUserCabinetButtonWithoutAuth()
+                .clickOnRecoverPasswordLink()
+                .clickOnLoginButton()
+                .login(user.getEmail(), user.getPassword())
+                .checkDisplayedCreateOrderButton());
+    }
+
+    @Test
+    @DisplayName("Проверка выхода из аккаунта")
+    public void logoutTest() {
+        ValidatableResponse response = userSteps.createUser(user);
+        accessToken = response.extract().path("accessToken");
+
+        Assert.assertTrue(new Header(driver)
+                .clickOnUserCabinetButtonWithoutAuth()
+                .login(user.getEmail(), user.getPassword())
+                .clickOnUserCabinetButtonWithAuth()
+                .clickOnLogoutButton()
+                .checkLoginPage());
+    }
+
 }

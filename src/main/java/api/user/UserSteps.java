@@ -21,7 +21,7 @@ public class UserSteps {
     }
 
     @Step("Логин пользователя")
-    public ValidatableResponse loginUser(User user){
+    public ValidatableResponse loginUser(User user) {
         return given(BaseHttpClient.baseRequestSpec())
                 .body(user)
                 .when()
@@ -30,7 +30,7 @@ public class UserSteps {
     }
 
     @Step("Удаление пользователя")
-    public void deleteUser(String accessToken){
+    public void deleteUser(String accessToken) {
         given(BaseHttpClient.baseRequestSpec())
                 .header("Authorization", accessToken)
                 .when()

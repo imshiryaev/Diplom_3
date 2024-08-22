@@ -8,7 +8,7 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 public abstract class BaseHttpClient {
-    public static RequestSpecification baseRequestSpec(){
+    public static RequestSpecification baseRequestSpec() {
         return new RequestSpecBuilder()
                 .setBaseUri(URL.BASE_URL)
                 .setContentType(ContentType.JSON)

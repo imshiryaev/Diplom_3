@@ -1,15 +1,16 @@
-package page;
+package pages;
 
 import base.BasePage;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class RegisterPage extends BasePage {
+public class RegistrationPage extends BasePage {
 
-    public RegisterPage(WebDriver driver) {
+    public RegistrationPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
@@ -32,8 +33,12 @@ public class RegisterPage extends BasePage {
     @FindBy(xpath = ".//p[text()='Некорректный пароль']")
     private WebElement incorrectPasswordText;
 
+    @FindBy(xpath = ".//a[text()='Войти']")
+    private WebElement loginButton;
+
+
     @Step("Регистрация")
-    public RegisterPage register(String name, String email, String password) {
+    public RegistrationPage register(String name, String email, String password) {
         nameInput.sendKeys(name);
         emailInput.sendKeys(email);
         passwordInput.sendKeys(password);
@@ -42,12 +47,19 @@ public class RegisterPage extends BasePage {
     }
 
     @Step("Проверка отображения страницы 'Вход' после успешной регистрации")
-    public boolean checkSuccessFullRegistration(){
+    public boolean checkSuccessFullRegistration() {
         return loginPageText.isDisplayed();
     }
 
     @Step("Проверка отображения текста после ввода некорректного пароля")
-    public boolean checkIncorrectPasswordText(){
+    public boolean checkIncorrectPasswordText() {
         return incorrectPasswordText.isDisplayed();
     }
+
+    @Step("Клик по кнопке Войти на странице регистрации")
+    public LoginPage clickOnLoginButton() {
+        loginButton.click();
+        return new LoginPage(driver);
+    }
+
 }

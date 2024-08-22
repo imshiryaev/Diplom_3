@@ -1,4 +1,4 @@
-package page;
+package pages;
 
 import base.BasePage;
 import io.qameta.allure.Step;
@@ -26,18 +26,35 @@ public class LoginPage extends BasePage {
     @FindBy(xpath = ".//a[@href='/register']")
     private WebElement registerLink;
 
+    @FindBy(xpath = ".//a[@href='/forgot-password']")
+    private WebElement recoverPasswordLink;
+
+    @FindBy(xpath = ".//h2[text()='Вход']")
+    private WebElement loginText;
+
     @Step("Логин пользователя")
-    public LoginPage login(String email, String password) {
+    public MainPage login(String email, String password) {
         emailInput.sendKeys(email);
         passwordInput.sendKeys(password);
         loginButton.click();
-        return this;
+        return new MainPage(driver);
     }
 
     @Step("Клик по кнопке 'Зарегистрироваться'")
-    public RegisterPage clickOnRegisterLink() {
+    public RegistrationPage clickOnRegisterLink() {
         registerLink.click();
-        return new RegisterPage(driver);
+        return new RegistrationPage(driver);
+    }
+
+    @Step("Клик по кнопке 'Восстановить пароль'")
+    public RecoverPasswordPage clickOnRecoverPasswordLink() {
+        recoverPasswordLink.click();
+        return new RecoverPasswordPage(driver);
+    }
+
+    @Step("Проверка отображения страницы вход")
+    public boolean checkLoginPage() {
+        return loginText.isDisplayed();
     }
 
 }

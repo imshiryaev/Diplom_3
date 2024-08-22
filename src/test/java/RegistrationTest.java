@@ -40,7 +40,7 @@ public class RegistrationTest {
     @DisplayName("Проверка успешной регистрации")
     public void registrationTest() {
         Assert.assertTrue(new Header(driver)
-                .clickOnButtonUserCabinet()
+                .clickOnUserCabinetButtonWithoutAuth()
                 .clickOnRegisterLink()
                 .register(user.getName(), user.getEmail(), user.getPassword())
                 .checkSuccessFullRegistration());
@@ -51,8 +51,9 @@ public class RegistrationTest {
     public void registrationTestWithIncorrectPassword() {
         user.setPassword(RandomStringUtils.randomAlphabetic(5));
         Assert.assertTrue(new Header(driver)
-                .clickOnButtonUserCabinet()
+                .clickOnUserCabinetButtonWithoutAuth()
                 .clickOnRegisterLink()
-                .register(user.getName(), user.getEmail(), user.getPassword()).checkIncorrectPasswordText());
+                .register(user.getName(), user.getEmail(), user.getPassword())
+                .checkIncorrectPasswordText());
     }
 }
