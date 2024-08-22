@@ -7,12 +7,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.MainPage;
 
 import java.time.Duration;
 
 import static api.user.UserGenerate.generateUserData;
+import static utils.WebDriverFactory.getWebDriver;
 
 public class MoveUserCabinetTest {
     protected WebDriver driver;
@@ -22,7 +22,7 @@ public class MoveUserCabinetTest {
 
     @Before
     public void setUp() {
-        driver = new ChromeDriver();
+        driver = getWebDriver();
         driver.get("https://stellarburgers.nomoreparties.site/");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
     }

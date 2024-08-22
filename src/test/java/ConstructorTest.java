@@ -1,18 +1,16 @@
-import api.user.User;
+
 import api.user.UserSteps;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.MainPage;
-
 import java.time.Duration;
 
-import static api.user.UserGenerate.generateUserData;
+import static utils.WebDriverFactory.getWebDriver;
+
 
 public class ConstructorTest {
     String accessToken;
@@ -22,7 +20,7 @@ public class ConstructorTest {
 
     @Before
     public void setUp() {
-        driver = new ChromeDriver();
+        driver = getWebDriver();
         driver.get("https://stellarburgers.nomoreparties.site/");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
     }
